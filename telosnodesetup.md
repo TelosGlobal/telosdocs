@@ -15,3 +15,20 @@
 ### Seed
 
 ### Producer
+
+## Installation Methods
+
+### Ubuntu package method
+
+### Compile source code method
+
+## run Nodeos
+
+## Configuration Files
+
+### Mainnet
+
+#### genesis.json
+
+#### config.ini
+
