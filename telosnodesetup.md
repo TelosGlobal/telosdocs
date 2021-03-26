@@ -20,6 +20,18 @@
 ### Seed
 
 ### Producer
+* Producer nodes generally runs in two modes using `nodeos` EOSIO component:
+
+#### Producing Node
+* __Producing Nodes__ are configured for block production.
+* They connect to the peer-to-peer network and actively produce new blocks.
+* Loose transactions are also validated and relayed.
+* On mainnet, they only produce blocks if their assigned block producer is part of an active schedule. 
+
+#### Non-Producing Node
+* __Non-Producing__ Nodes connect to the peer-to-peer network but do not actively produce new blocks.
+* They are useful for acting as proxy nodes, relaying API calls, validating transactions, broadcasting information to other nodes, etc. 
+* They are also useful for monitoring the blockchain state.
 
 ## Installation Methods
 * EOSIO currently supports the following operating systems:
