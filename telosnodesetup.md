@@ -92,10 +92,220 @@ $ git checkout tags/v2.0.11`
 
 ## Configuration Files
 
+### Testnet
+
+#### genesis.json
+```
+{
+ "initial_key": "EOS52vfcN43YHHU8Akh7VyfBdnDiMg15dPTELosWG9SR86ssBoU1T",
+ "initial_configuration": {
+   "max_transaction_delay": 3888000,
+   "min_transaction_cpu_usage": 100,
+   "net_usage_leeway": 500,
+   "context_free_discount_net_usage_den": 100,
+   "max_transaction_net_usage": 524288,
+   "context_free_discount_net_usage_num": 20,
+   "max_transaction_lifetime": 3600,
+   "deferred_trx_expiration_window": 600,
+   "max_authority_depth": 6,
+   "max_transaction_cpu_usage": 5000000,
+   "max_block_net_usage": 1048576,
+   "target_block_net_usage_pct": 1000,
+   "max_generated_transaction_count": 16,
+   "max_inline_action_size": 4096,
+   "target_block_cpu_usage_pct": 1000,
+   "base_per_transaction_net_usage": 12,
+   "max_block_cpu_usage": 50000000,
+   "max_inline_action_depth": 4
+ },
+ "initial_timestamp": "2018-12-12T10:29:00.000"
+}
+```
+
+#### producer config.ini
+```
+chain-state-db-size-mb = 1024000
+reversible-blocks-db-size-mb = 1024000
+
+http-server-address = 0.0.0.0:8888
+#https-server-address = 0.0.0.0:443
+
+access-control-allow-origin = *
+access-control-max-age = 1
+http-validate-host = false
+access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
+
+filter-on = *
+filter-out = nebulatpstps::
+filter-out = eosio:onblock:
+
+max-clients = 250
+connection-cleanup-period = 120
+#network-version-match = 1
+sync-fetch-span = 10000
+
+verbose-http-errors = true
+
+plugin = eosio::chain_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+plugin = eosio::producer_plugin
+
+wasm-runtime = eos-vm-jit
+chain-threads = 4
+cpu-effort-percent = 20
+last-block-cpu-effort-percent = 10
+last-block-time-offset-us = -300000
+
+p2p-peer-address=<See peer list at telos.net>
+
+producer-name = <your account name>
+
+signature-provider = <your public key here>
+```
+
+#### api config.ini
+```
+chain-state-db-size-mb = 1024000
+reversible-blocks-db-size-mb = 1024000
+
+http-server-address = 0.0.0.0:8888
+#https-server-address = 0.0.0.0:443
+
+access-control-allow-origin = *
+access-control-max-age = 1
+http-validate-host = false
+access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
+
+filter-on = *
+filter-out = nebulatpstps::
+filter-out = eosio:onblock:
+
+max-clients = 250
+connection-cleanup-period = 120
+#network-version-match = 1
+sync-fetch-span = 10000
+
+verbose-http-errors = true
+
+plugin = eosio::chain_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+
+wasm-runtime = eos-vm-jit
+chain-threads = 4
+cpu-effort-percent = 20
+last-block-cpu-effort-percent = 10
+last-block-time-offset-us = -300000
+
+p2p-peer-address=<See peer list at telos.net>
+```
+
 ### Mainnet
 
 #### genesis.json
+```
+{
+ "initial_key": "EOS52vfcN43YHHU8Akh7VyfBdnDiMg15dPTELosWG9SR86ssBoU1T",
+ "initial_configuration": {
+   "max_transaction_delay": 3888000,
+   "min_transaction_cpu_usage": 100,
+   "net_usage_leeway": 500,
+   "context_free_discount_net_usage_den": 100,
+   "max_transaction_net_usage": 524288,
+   "context_free_discount_net_usage_num": 20,
+   "max_transaction_lifetime": 3600,
+   "deferred_trx_expiration_window": 600,
+   "max_authority_depth": 6,
+   "max_transaction_cpu_usage": 5000000,
+   "max_block_net_usage": 1048576,
+   "target_block_net_usage_pct": 1000,
+   "max_generated_transaction_count": 16,
+   "max_inline_action_size": 4096,
+   "target_block_cpu_usage_pct": 1000,
+   "base_per_transaction_net_usage": 12,
+   "max_block_cpu_usage": 50000000,
+   "max_inline_action_depth": 4
+ },
+ "initial_timestamp": "2018-12-12T10:29:00.000"
+}
+```
 
-#### config.ini
+#### producer config.ini
+```
+chain-state-db-size-mb = 1024000
+reversible-blocks-db-size-mb = 1024000
 
+http-server-address = 0.0.0.0:8888
+#https-server-address = 0.0.0.0:443
 
+access-control-allow-origin = *
+access-control-max-age = 1
+http-validate-host = false
+access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
+
+filter-on = *
+filter-out = nebulatpstps::
+filter-out = eosio:onblock:
+
+max-clients = 250
+connection-cleanup-period = 120
+#network-version-match = 1
+sync-fetch-span = 10000
+
+verbose-http-errors = true
+
+plugin = eosio::chain_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+plugin = eosio::producer_plugin
+
+wasm-runtime = eos-vm-jit
+chain-threads = 4
+cpu-effort-percent = 20
+last-block-cpu-effort-percent = 10
+last-block-time-offset-us = -300000
+
+p2p-peer-address=<See peer list at telos.net>
+
+producer-name = <your account name>
+
+signature-provider = <your public key here>
+```
+
+#### api config.ini
+```
+chain-state-db-size-mb = 1024000
+reversible-blocks-db-size-mb = 1024000
+
+http-server-address = 0.0.0.0:8888
+#https-server-address = 0.0.0.0:443
+
+access-control-allow-origin = *
+access-control-max-age = 1
+http-validate-host = false
+access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
+
+filter-on = *
+filter-out = nebulatpstps::
+filter-out = eosio:onblock:
+
+max-clients = 250
+connection-cleanup-period = 120
+#network-version-match = 1
+sync-fetch-span = 10000
+
+verbose-http-errors = true
+
+plugin = eosio::chain_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+
+wasm-runtime = eos-vm-jit
+chain-threads = 4
+cpu-effort-percent = 20
+last-block-cpu-effort-percent = 10
+last-block-time-offset-us = -300000
+
+p2p-peer-address=<See peer list at telos.net>
+```
