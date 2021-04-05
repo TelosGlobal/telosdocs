@@ -3,13 +3,16 @@
 
 ## What is the role of a Telos Validator
 * They are a core component of Telos network built on EOSIO protocol.
+* Telos Validators play a key role in the operation of the network. 
 * They provide stability, reliability, security and extensive infrastructure coverage for Telos network.
 * Contribute to Telos developerment toolkits, so as to get noticed by the voters & stay in BP list eligibile for incentives (in TLOS tokens).
+* Telos Validators verify transactions on the Telos networks by collecting transaction data and storing that information in blocks. 
+* Once a block is prepared, validators broadcast the block to the network for verification.
 
 ### Telos Validator Requirements
-* 
 
 ## What is a Telos validator node
+* In the Telos network, block production and block validation are performed by special nodes called "Telos validator node". Validator nodes are elected by Telos stakeholders. Each validator node runs an instance of an Telos node using the nodeos service. For this reason, validators that are on the active schedule to produce blocks are also called "active" or "producing" validator nodes.
 
 ## Types of nodes
 * In the Telos blockchain network, you might find the slightly different naming of nodes, such as a API node, Producer node, History-API node, Seed node. All nodes keep updating an internal database by applying the transactions as they arrive in incoming blocks. The difference between the node types lies in the amount of history they keep track of, and in the functionality they provide.
