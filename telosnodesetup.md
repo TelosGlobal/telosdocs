@@ -1,15 +1,27 @@
 # How to setup a validator node on Telos
 * A validator needs to know it's role & fulfill the requirements.
+* Having more validators is healthier and better for the Telos ecosystem, especially validators that are committed to transparency, and being in a state of giving continuous contribution.
+* Validators are a core component of Telos network built on EOSIO protocol.
+* Below is the guide to get a node up and running as a Validator on Telos.
 
 ## What is the role of a Telos Validator
-* They are a core component of Telos network built on EOSIO protocol.
-* Telos Validators play a key role in the operation of the network. 
+* Validators are decentralized entities that govern the Telos blockchain. Validators will produce the blocks of the Telos blockchain.
+* Telos Validators play a key role in the operation of the network.
 * They provide stability, reliability, security and extensive infrastructure coverage for Telos network.
 * Contribute to Telos developerment toolkits, so as to get noticed by the voters & stay in BP list eligibile for incentives (in TLOS tokens).
 * Telos Validators verify transactions on the Telos networks by collecting transaction data and storing that information in blocks. 
 * Once a block is prepared, validators broadcast the block to the network for verification.
+* Validators will earn block rewards in the form of TLOS tokens produced by token inflation.
+* Validators are responsible for Telos infrastructure growth, community support and education, and financial support for development of Telos DApps.
 
 ### Telos Validator Requirements
+* <u>__A Mission__</u> — what are you going to provide to the world as a Validator? How will you spend your TLOS? Why should people vote for you?
+* <u>__Unique EOS producer account__</u> — This should not resemble the name of any current Telos Validator Candidates. You can view all of the current Validators and Validator Candidates here: https://telos.bloks.io/
+* <u>__A few servers running nodeos__</u> — virtual machines or even a desktop with a lot of RAM would be ok to start off. Some Block Producers are running on desktop hardware (i7 or i9 chips). You just need to provide the RAM that is required by Telos Mainnet and it increases at 1 KB/block currently. It is ~ 12.56 GB at the time of writing this.
+* <u>__Website__</u> — your website should have a `bp.json` ([example](https://www.alohaeos.com/bp.json)) at it's root, and links to an ownership disclosure ([example](https://www.alohaeos.com/ownership)), and a code of conduct ([example](https://www.alohaeos.com/conduct))).
+* <u>__Producer account creation for rewards__</u> — Create a unique Telos Account that will be the name of your Validator. Telos Accounts are 12 characters long. For more, visit here: 
+   - [Telos account creator](https://telos-account-creator.com/)
+   - [FREE Telos account via Sqrl Wallet](https://telosuk.io/how-to-create-a-free-telos-account/)
 
 ## What is a Telos validator node
 * In the Telos network, block production and block validation are performed by special nodes called "Telos validator node". Validator nodes are elected by Telos stakeholders. Each validator node runs an instance of an Telos node using the nodeos service. For this reason, validators that are on the active schedule to produce blocks are also called "active" or "producing" validator nodes.
@@ -48,11 +60,11 @@ History-API nodes are API nodes with a complete transaction history of all accou
 
 ## Installation Methods
 * EOSIO currently supports the following operating systems:
-	- Amazon Linux 2
-	- CentOS 7
-	- Ubuntu 16.04
-	- Ubuntu 18.04
-	- MacOS 10.14 (Mojave)
+   - Amazon Linux 2
+   - CentOS 7
+   - Ubuntu 16.04
+   - Ubuntu 18.04
+   - MacOS 10.14 (Mojave)
 
 > NOTE: If you are new to EOSIO, it is recommended that you install the EOSIO Prebuilt Binaries. If you are an advanced developer, a block producer, or no binaries are available for your platform, you may need to Build EOSIO from source depending on your OS.
 
@@ -95,220 +107,10 @@ $ git checkout tags/v2.0.11`
 
 ## Configuration Files
 
-### Testnet
-
-#### genesis.json
-```
-{
- "initial_key": "EOS52vfcN43YHHU8Akh7VyfBdnDiMg15dPTELosWG9SR86ssBoU1T",
- "initial_configuration": {
-   "max_transaction_delay": 3888000,
-   "min_transaction_cpu_usage": 100,
-   "net_usage_leeway": 500,
-   "context_free_discount_net_usage_den": 100,
-   "max_transaction_net_usage": 524288,
-   "context_free_discount_net_usage_num": 20,
-   "max_transaction_lifetime": 3600,
-   "deferred_trx_expiration_window": 600,
-   "max_authority_depth": 6,
-   "max_transaction_cpu_usage": 5000000,
-   "max_block_net_usage": 1048576,
-   "target_block_net_usage_pct": 1000,
-   "max_generated_transaction_count": 16,
-   "max_inline_action_size": 4096,
-   "target_block_cpu_usage_pct": 1000,
-   "base_per_transaction_net_usage": 12,
-   "max_block_cpu_usage": 50000000,
-   "max_inline_action_depth": 4
- },
- "initial_timestamp": "2018-12-12T10:29:00.000"
-}
-```
-
-#### producer config.ini
-```
-chain-state-db-size-mb = 1024000
-reversible-blocks-db-size-mb = 1024000
-
-http-server-address = 0.0.0.0:8888
-#https-server-address = 0.0.0.0:443
-
-access-control-allow-origin = *
-access-control-max-age = 1
-http-validate-host = false
-access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
-
-filter-on = *
-filter-out = nebulatpstps::
-filter-out = eosio:onblock:
-
-max-clients = 250
-connection-cleanup-period = 120
-#network-version-match = 1
-sync-fetch-span = 10000
-
-verbose-http-errors = true
-
-plugin = eosio::chain_plugin
-plugin = eosio::chain_api_plugin
-plugin = eosio::http_plugin
-plugin = eosio::producer_plugin
-
-wasm-runtime = eos-vm-jit
-chain-threads = 4
-cpu-effort-percent = 20
-last-block-cpu-effort-percent = 10
-last-block-time-offset-us = -300000
-
-p2p-peer-address=<See peer list at telos.net>
-
-producer-name = <your account name>
-
-signature-provider = <your public key here>
-```
-
-#### api config.ini
-```
-chain-state-db-size-mb = 1024000
-reversible-blocks-db-size-mb = 1024000
-
-http-server-address = 0.0.0.0:8888
-#https-server-address = 0.0.0.0:443
-
-access-control-allow-origin = *
-access-control-max-age = 1
-http-validate-host = false
-access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
-
-filter-on = *
-filter-out = nebulatpstps::
-filter-out = eosio:onblock:
-
-max-clients = 250
-connection-cleanup-period = 120
-#network-version-match = 1
-sync-fetch-span = 10000
-
-verbose-http-errors = true
-
-plugin = eosio::chain_plugin
-plugin = eosio::chain_api_plugin
-plugin = eosio::http_plugin
-
-wasm-runtime = eos-vm-jit
-chain-threads = 4
-cpu-effort-percent = 20
-last-block-cpu-effort-percent = 10
-last-block-time-offset-us = -300000
-
-p2p-peer-address=<See peer list at telos.net>
-```
-
 ### Mainnet
 
 #### genesis.json
-```
-{
- "initial_key": "EOS52vfcN43YHHU8Akh7VyfBdnDiMg15dPTELosWG9SR86ssBoU1T",
- "initial_configuration": {
-   "max_transaction_delay": 3888000,
-   "min_transaction_cpu_usage": 100,
-   "net_usage_leeway": 500,
-   "context_free_discount_net_usage_den": 100,
-   "max_transaction_net_usage": 524288,
-   "context_free_discount_net_usage_num": 20,
-   "max_transaction_lifetime": 3600,
-   "deferred_trx_expiration_window": 600,
-   "max_authority_depth": 6,
-   "max_transaction_cpu_usage": 5000000,
-   "max_block_net_usage": 1048576,
-   "target_block_net_usage_pct": 1000,
-   "max_generated_transaction_count": 16,
-   "max_inline_action_size": 4096,
-   "target_block_cpu_usage_pct": 1000,
-   "base_per_transaction_net_usage": 12,
-   "max_block_cpu_usage": 50000000,
-   "max_inline_action_depth": 4
- },
- "initial_timestamp": "2018-12-12T10:29:00.000"
-}
-```
 
-#### producer config.ini
-```
-chain-state-db-size-mb = 1024000
-reversible-blocks-db-size-mb = 1024000
+#### config.ini
 
-http-server-address = 0.0.0.0:8888
-#https-server-address = 0.0.0.0:443
 
-access-control-allow-origin = *
-access-control-max-age = 1
-http-validate-host = false
-access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
-
-filter-on = *
-filter-out = nebulatpstps::
-filter-out = eosio:onblock:
-
-max-clients = 250
-connection-cleanup-period = 120
-#network-version-match = 1
-sync-fetch-span = 10000
-
-verbose-http-errors = true
-
-plugin = eosio::chain_plugin
-plugin = eosio::chain_api_plugin
-plugin = eosio::http_plugin
-plugin = eosio::producer_plugin
-
-wasm-runtime = eos-vm-jit
-chain-threads = 4
-cpu-effort-percent = 20
-last-block-cpu-effort-percent = 10
-last-block-time-offset-us = -300000
-
-p2p-peer-address=<See peer list at telos.net>
-
-producer-name = <your account name>
-
-signature-provider = <your public key here>
-```
-
-#### api config.ini
-```
-chain-state-db-size-mb = 1024000
-reversible-blocks-db-size-mb = 1024000
-
-http-server-address = 0.0.0.0:8888
-#https-server-address = 0.0.0.0:443
-
-access-control-allow-origin = *
-access-control-max-age = 1
-http-validate-host = false
-access-control-allow-headers = Origin, X-Requested-With, Content-Type, Accept
-
-filter-on = *
-filter-out = nebulatpstps::
-filter-out = eosio:onblock:
-
-max-clients = 250
-connection-cleanup-period = 120
-#network-version-match = 1
-sync-fetch-span = 10000
-
-verbose-http-errors = true
-
-plugin = eosio::chain_plugin
-plugin = eosio::chain_api_plugin
-plugin = eosio::http_plugin
-
-wasm-runtime = eos-vm-jit
-chain-threads = 4
-cpu-effort-percent = 20
-last-block-cpu-effort-percent = 10
-last-block-time-offset-us = -300000
-
-p2p-peer-address=<See peer list at telos.net>
-```
