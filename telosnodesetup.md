@@ -140,13 +140,13 @@ This section describes how to set up a producing node within the EOSIO network. 
 #### Steps
 Please follow the steps below to set up a producing node:
 
-1. [Local Wallet]()
-1. [Create your `bp.json` for your Telos validator]()
-1. [Register your account as a producing validator](#1-register-your-account-as-a-producing-validator)
-1. [Set Producer Name]()
-1. [Set the Producer's signature-provider]()
-1. [Define a peers list]()
-1. [Load the Required Plugins]()
+1. [Local Wallet](#1-local-wallet)
+1. [Create your `bp.json` for your Telos validator](#2-create-your-bpjson-for-your-telos-validator)
+1. [Register your account as a producing validator](#3-register-your-account-as-a-producing-validator)
+1. [Set Producer Name](#4-set-producer-name)
+1. [Set the Producer's signature-provider](#5-set-the-producers-signature-provider)
+1. [Define a peers list](#6-define-a-peers-list)
+1. [Load the Required Plugins](#7-load-the-required-plugins)
 
 ##### 1. Local Wallet
 ###### a. Create Telos Wallet locally. Record the password and keep secure.
@@ -166,10 +166,7 @@ cleos wallet unlock -n <wallet_name> --password <wallet_password>
 * M-2: Using CLI
 
 ```console 
-#todo
-<!-- cleos -u http://api.main.alohaeos.com system newaccount — stake-net "4.0000 TLOS" — stake-cpu "4.0000 EOS" — buy-ram-kbytes 8 accountname newaccountname <owner-publickey> <active-publickey> -->
-
-cleos -u http://api.main.alohaeos.com system newaccount — stake-net "4.0000 TLOS" — stake-cpu "4.0000 EOS" — buy-ram-kbytes 8 alohaeosprod newaccountname <owner-publickey> <active-publickey>
+cleos -u <api_endpoint> system newaccount --stake-net <telos_net_amount> --stake-cpu <telos_cpu_amount> --buy-ram-kbytes <telos_ram_amount> <telos_existing_account_name> <telos_existing_account_name> <owner-publickey> <active-publickey>
 ```
 
 ###### d. Load new account private key into your wallet
@@ -200,7 +197,10 @@ cleos -u http://api.main.alohaeos.com system regproducer alohaeosprod EOS87wJkSD
 
 > If you currently have your active key listed in your `config.ini` for signing blocks — you need to stop it and replace it with a separate Signature key
 
-Just follow this in order to 
+Just follow this in order to replace the existing active (or insecure key) with separate signature key
+* Create new key pair using `cleos create key --to-console`
+* Replace signature provider record in your `config.ini` with the new key: `signature-provider = EOS-SIGNATURE-PUBLIC-KEY=KEY:SIGNATURE-PRIVATE-KEY`
+* Call regproducer command with the new signature key: `cleos system regproducer [PRODUCER-NAME] [EOS-SIGNATURE-PUBLIC-KEY] {PRODUCER_URL] [COUNTRY_CODE]`
 
 ##### 4. Set Producer Name
 Set the `validator_name` option in `config.ini` to your account, as follows:
@@ -212,11 +212,104 @@ producer-name = alohaeosprod
 ```
 
 ##### 5. Set the Producer's signature-provider
-You will need to set the private key for your validator. The public key should have an authority for the validator account defined above.
+You will need to set the separate private key for your validator. The public key should have an authority for the validator account defined above.
+
+`signature-provider` is defined with a 3-field tuple:
+
+* `public-key` - A valid EOSIO public key in form of a string.
+* `provider-spec` - It's a string formatted like :
+* `provider-type` - KEY or KEOSD
+
+###### Using a Key:
+```console
+# config.ini:
+
+signature-provider = PUBLIC_SIGNING_KEY=KEY:PRIVATE_SIGNING_KEY
+
+//Example
+//signature-provider = EOS51PsUQXRKphEBPBP8iH8ZRGNvyqJ13hbR8yXGSPKEf5TQH27TF=KEY:5KgV1HsxEm3qKYdLaUgpdZvJcAV2AA7zVDJYBL7nVoE4mdcqQR1
+```
+
+###### Using Keosd:
+```console
+# config.ini:
+
+signature-provider = KEOSD:<data>   
+
+//Example
+//EOS51PsUQXRKphEBPBP8iH8ZRGNvyqJ13hbR8yXGSPKEf5TQH27TF=KEOSD:https://127.0.0.1:88888
+```
+
+##### 6. Define a peers list
+```console
+# config.ini:
+
+# Default p2p port is 9876
+p2p-peer-address = 195.201.82.181:9876
+p2p-peer-address = 47.52.71.18:9876
+p2p-peer-address = 207.180.220.203:9876
+p2p-peer-address = 149.28.254.141:9876
+p2p-peer-address = p2p-telos.blckchnd.com:19876
+p2p-peer-address = p2p.blindblocart.io:9877
+p2p-peer-address = telos.caleos.io:9880
+p2p-peer-address = p2p.telos.cryptosuvi.io:2222
+```
+
+For more, visit here for [Telos Mainnet](https://github.com/telosnetwork/api-p2p-nodes/blob/master/TelosMainNet.csv) & [Telos Testnet](https://github.com/telosnetwork/api-p2p-nodes/blob/master/TelosTestnet.csv)
+
+##### 7. Load the Required Plugins
+In your `config.ini`, confirm the following plugins are loading or append them if necessary.
+
+```console
+# config.ini:
+
+plugin = eosio::chain_plugin
+plugin = eosio::producer_plugin
+```
 
 ### B. Non-Producing or Standby mode
 `Non-Producing Validator Nodes` connect to the peer-to-peer (p2p) network but do not actively produce new blocks; they are useful for acting as proxy nodes, relaying API calls, validating transactions, broadcasting information to other nodes, etc. `Non-Producing Validator Nodes` are also useful for monitoring the blockchain state.
 
+#### Goal
+This section describes how to set up a non-producing validator node within the Telos network. A non-producing validator node is a node that is not configured to produce blocks, instead it is connected and synchronized with other peers from an EOSIO based blockchain, exposing one or more services publicly or privately by enabling one or more [Nodeos Plugins](#nodeos-plugins), except the producer_plugin.
+
+#### Pre-requisites
+* Install the [EOSIO software](#installation-methods) before starting this section.
+* It is assumed that `nodeos`, `cleos`, and `keosd` are accessible through the path. If you built EOSIO using shell scripts, make sure to run the Install Script.
+* Know how to pass Nodeos options to enable or disable functionality.
+
+#### Steps
+Please follow the steps below to set up a non-producing node:
+
+1. [Set Peers]()
+1. [Enable one or more available plugins]()
+
+##### 1. Set Peers
+You need to set some peers in your config ini, for example:
+
+```console
+# config.ini:
+
+# Default p2p port is 9876
+p2p-peer-address = 195.201.82.181:9876
+p2p-peer-address = 47.52.71.18:9876
+p2p-peer-address = 207.180.220.203:9876
+p2p-peer-address = 149.28.254.141:9876
+p2p-peer-address = p2p-telos.blckchnd.com:19876
+p2p-peer-address = p2p.blindblocart.io:9877
+p2p-peer-address = telos.caleos.io:9880
+p2p-peer-address = p2p.telos.cryptosuvi.io:2222
+```
+
+For more, visit here for [Telos Mainnet](https://github.com/telosnetwork/api-p2p-nodes/blob/master/TelosMainNet.csv) & [Telos Testnet](https://github.com/telosnetwork/api-p2p-nodes/blob/master/TelosTestnet.csv)
+
+Or you can include the peer in as a boot flag when running `nodeos`, as follows:
+```console
+nodeos ... --p2p-peer-address=106.10.42.238:9876
+```
+
+##### 2. Enable one or more available plugins
+Each available plugin is listed and detailed in the [Nodeos Plugins](#nodeos-plugins) section. When `nodeos` starts, it will expose the functionality provided by the enabled plugins it was started with. For example, if you start `nodeos` with `state_history_plugin` enabled, you will have a non-producing node that offers full blockchain history. If you start `nodeos` with `http_plugin` enabled, you will have a non-producing node which exposes the Telos RPC API. Therefore, you can extend the basic functionality provided by a non-producing node by enabling any number of existing plugins on top of it. Another aspect to consider is that some plugins have dependencies to other plugins. Therefore, you need to satisfy all dependencies for a plugin in order to enable it.
 
 
 ## Configuration Files
@@ -224,7 +317,80 @@ You will need to set the private key for your validator. The public key should h
 ### Mainnet
 
 #### genesis.json
+```json
+{
+ "initial_key": "EOS52vfcN43YHHU8Akh7VyfBdnDiMg15dPTELosWG9SR86ssBoU1T",
+ "initial_configuration": {
+   "max_transaction_delay": 3888000,
+   "min_transaction_cpu_usage": 100,
+   "net_usage_leeway": 500,
+   "context_free_discount_net_usage_den": 100,
+   "max_transaction_net_usage": 524288,
+   "context_free_discount_net_usage_num": 20,
+   "max_transaction_lifetime": 3600,
+   "deferred_trx_expiration_window": 600,
+   "max_authority_depth": 6,
+   "max_transaction_cpu_usage": 5000000,
+   "max_block_net_usage": 1048576,
+   "target_block_net_usage_pct": 1000,
+   "max_generated_transaction_count": 16,
+   "max_inline_action_size": 4096,
+   "target_block_cpu_usage_pct": 1000,
+   "base_per_transaction_net_usage": 12,
+   "max_block_cpu_usage": 50000000,
+   "max_inline_action_depth": 4
+ },
+ "initial_timestamp": "2018-12-12T10:29:00.000"
+}
+```
 
 #### config.ini
+```
+###### producer plugin options - enable if running producer node
+plugin = eosio::producer_plugin
+## sig provider keys should match the key on your producer-name
+signature-provider = <pubkey>=KEY:<privkey>
+producer-name = eosio
 
+## additional producer plugin options can be left default
+max-transaction-time = 10000
+max-irreversible-block-age = -1
+abi-serializer-max-time-ms = 2000
+enable-stale-production = true
+pause-on-startup = false
 
+###### chain plugin options
+plugin = eosio::chain_plugin
+wasm-runtime = wabt
+reversible-blocks-db-size-mb = 340
+contracts-console = false
+## set chain-state-db-size-mb to equal the size of your RAM
+chain-state-db-size-mb = 98304
+
+###### http plugin options
+plugin = eosio::http_plugin
+http-server-address = 0.0.0.0:1880
+access-control-allow-origin = *
+access-control-allow-credentials = false
+https-client-validate-peers = 1 
+verbose-http-errors = true
+http-validate-host = 0
+## enable if using https
+# https-server-address = 0.0.0.0:443
+# https-certificate-chain-file
+
+# nodeos general config
+p2p-server-address = 0.0.0.0:9876
+p2p-listen-endpoint = 0.0.0.0:9876
+p2p-max-nodes-per-host = 1
+max-clients = 250
+connection-cleanup-period = 30
+sync-fetch-span = 100
+txn-reference-block-lag = 0
+allowed-connection = any
+agent-name = bensigcoolconfig
+
+###### additional plugins
+plugin = eosio::chain_api_plugin
+plugin = eosio::history_plugin
+```
