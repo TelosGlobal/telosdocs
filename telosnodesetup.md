@@ -17,18 +17,18 @@
 ### Telos Validator Requirements
 * <u>__A Mission__</u> — what are you going to provide to the world as a Telos Validator? How will you spend your TLOS? Why should people vote for you?
 * <u>__Unique Telos producer account__</u> — This should not resemble the name of any current Telos Validator Candidates. You can view all of the current Validators and Validator Candidates [here](https://telos.bloks.io/).
-* <u>__A few servers running nodeos__</u> — virtual machines or even a desktop with a lot of RAM would be ok to start off. Some Block Producers are running on desktop hardware (i7 or i9 chips). You just need to provide the RAM that is required by Telos Mainnet and it increases at 1 KB/block currently. It is ~ 12.56 GB at the time of writing this.
+* <u>__A few servers running nodeos__</u> — virtual machines or even a desktop with a lot of RAM would be ok to start off. Some Telos Validators are running on desktop hardware (i7 or i9 chips). You just need to provide the RAM that is required by Telos Mainnet and it increases at a rate of 1 KB/block currently. It is ~ 12.56 GB at the time of writing this guide.
 * <u>__Website__</u> — your website should have a `bp.json` ([example](https://www.alohaeos.com/bp.json)) at it's root, and links to an ownership disclosure ([example](https://www.alohaeos.com/ownership)), and a code of conduct ([example](https://www.alohaeos.com/conduct))).
-* <u>__Producer account creation for rewards__</u> — Create a unique Telos Account that will be the name of your Validator. Telos Accounts are 12 characters long. For more, visit here: 
+* <u>__Validator account creation for rewards__</u> — Create a unique Telos Account that will be the name of your Validator. Telos Accounts are 12 characters long. For account creation, visit here: 
 	- [Telos account creator](https://telos-account-creator.com/)
 	- [FREE Telos account via Sqrl Wallet](https://telosuk.io/how-to-create-a-free-telos-account/)
 
 ## What is a Telos validator node
-* In the Telos network, block production and block validation are performed by special nodes called "Telos validator node". Validator nodes are elected by Telos stakeholders. Each validator node runs an instance of an Telos node using the nodeos service. For this reason, validators that are on the active schedule to produce blocks are also called "active" or "producing" validator nodes.
+* In the Telos network, block production and block validation are performed by special nodes called "Telos validator node". Validator nodes are elected by Telos stakeholders via DPoS Consensus Algorithm. Each validator node runs an instance of a Telos node using the `nodeos` service. For this reason, validators that are on the active schedule to produce blocks are also called "active" or "producing" validator nodes.
 
 ## Types of nodes
 * In the Telos blockchain network, you might find the slightly different naming of nodes, such as a API node, Producer node, History-API node, Seed node. All nodes keep updating an internal database by applying the transactions as they arrive in incoming blocks. The difference between the node types lies in the amount of history they keep track of, and in the functionality they provide.
-* After proper EOS.IO core software release installed, each type node is implemented by the same executable, however, each node would need to set up different configurations to start the node. For example; although a block producing node can have full history, that would be a waste of resources. Block producing nodes should run with minimal plugins (i.e., only witness_plugin). Also, Block producing nodes should not have open network ports. We strongly recommend all node service providers to run and maintain their own nodes for reliability and security reasons.
+* After proper installation of released __EOS.IO__ core software, each type of node is implemented by the same executable, however, each node would need to set up different configurations to start the node. For example: although a block producing node can have full history, that would be a waste of resources. Block producing validator nodes should run with minimal plugins (i.e., only witness_plugin). Also, producing validator nodes should not have open network ports. We strongly recommend all node service providers to run and maintain their own nodes for reliability and security reasons.
 
 ### API
 API nodes provide network services to client applications. They usually have account transaction histories accessible though API calls, but can vary in the amount of available history. 
