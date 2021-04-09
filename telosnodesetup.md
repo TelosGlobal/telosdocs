@@ -16,7 +16,7 @@
 
 ### Telos Validator Requirements
 * <u>__A Mission__</u> — what are you going to provide to the world as a Telos Validator? How will you spend your TLOS? Why should people vote for you?
-* <u>__Unique Telos producer account__</u> — This should not resemble the name of any current Telos Validator Candidates. You can view all of the current Validators and Validator Candidates here: https://telos.bloks.io/
+* <u>__Unique Telos producer account__</u> — This should not resemble the name of any current Telos Validator Candidates. You can view all of the current Validators and Validator Candidates [here](https://telos.bloks.io/).
 * <u>__A few servers running nodeos__</u> — virtual machines or even a desktop with a lot of RAM would be ok to start off. Some Block Producers are running on desktop hardware (i7 or i9 chips). You just need to provide the RAM that is required by Telos Mainnet and it increases at 1 KB/block currently. It is ~ 12.56 GB at the time of writing this.
 * <u>__Website__</u> — your website should have a `bp.json` ([example](https://www.alohaeos.com/bp.json)) at it's root, and links to an ownership disclosure ([example](https://www.alohaeos.com/ownership)), and a code of conduct ([example](https://www.alohaeos.com/conduct))).
 * <u>__Producer account creation for rewards__</u> — Create a unique Telos Account that will be the name of your Validator. Telos Accounts are 12 characters long. For more, visit here: 
