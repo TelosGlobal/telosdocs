@@ -13,6 +13,8 @@
 * Once a block is prepared, validators broadcast the block to the network for verification.
 * Validators will earn block rewards in the form of TLOS tokens produced by token inflation.
 * Validators are responsible for Telos infrastructure growth, community support and education, and financial support for development of Telos DApps.
+* Validators need to participate in on-chain governance. For more, refer to [this](https://telos.net/governance-documentation/).
+* Validators can have a look at the [Telos rules](https://telos.net/governance-documentation/).
 
 ### Telos Validator Requirements
 * <u>__A Mission__</u> — what are you going to provide to the world as a Telos Validator? How will you spend your TLOS? Why should people vote for you?
@@ -393,4 +395,139 @@ agent-name = bensigcoolconfig
 ###### additional plugins
 plugin = eosio::chain_api_plugin
 plugin = eosio::history_plugin
+
+###### p2p peer address
+p2p-peer-address = 159.69.63.222:7776
+p2p-peer-address = 109.237.25.217:3876
+p2p-peer-address = testnet.telos.caleos.io:9879
+p2p-peer-address = p2p.testnet.telos.eosdetroit.io:1337
+p2p-peer-address = telosafrique.eosnairobi.io:9376
+p2p-peer-address = telos.eosbcn.com:9876
+p2p-peer-address = testnet.telos.eosindex.io:9876
 ```
+
+### Testnet
+
+#### genesis.json
+```json
+{
+"initial_key": "EOS7xyPWfh6743fhZ46zQQcXSctddoqG65d44YsyRnCJCs54mJLrH",
+"initial_configuration": {
+   "max_block_net_usage": 1048576,
+   "target_block_net_usage_pct": 1000,
+   "max_transaction_net_usage": 524288,
+   "base_per_transaction_net_usage": 12,
+   "net_usage_leeway": 500,
+   "context_free_discount_net_usage_num": 20,
+   "context_free_discount_net_usage_den": 100,
+   "max_block_cpu_usage": 5000000,
+   "target_block_cpu_usage_pct": 1000,
+   "max_transaction_cpu_usage": 150000,
+   "min_transaction_cpu_usage": 100,
+   "max_transaction_lifetime": 3600,
+   "deferred_trx_expiration_window": 600,
+   "max_transaction_delay": 3888000,
+   "max_inline_action_size": 4096,
+   "max_inline_action_depth": 4,
+   "max_authority_depth": 6
+ },
+"initial_timestamp": "2019–08–07T12:00:00.000"
+}
+```
+
+#### config.ini
+```
+###### producer plugin options - enable if running producer node
+plugin = eosio::producer_plugin
+## sig provider keys should match the key on your producer-name
+signature-provider = <pubkey>=KEY:<privkey>
+producer-name = eosio
+
+## additional producer plugin options can be left default
+max-transaction-time = 10000
+max-irreversible-block-age = -1
+abi-serializer-max-time-ms = 2000
+enable-stale-production = true
+pause-on-startup = false
+
+###### chain plugin options
+plugin = eosio::chain_plugin
+wasm-runtime = wabt
+reversible-blocks-db-size-mb = 340
+contracts-console = false
+## set chain-state-db-size-mb to equal the size of your RAM
+chain-state-db-size-mb = 98304
+
+###### http plugin options
+plugin = eosio::http_plugin
+http-server-address = 0.0.0.0:1880
+access-control-allow-origin = *
+access-control-allow-credentials = false
+https-client-validate-peers = 1 
+verbose-http-errors = true
+http-validate-host = 0
+## enable if using https
+# https-server-address = 0.0.0.0:443
+# https-certificate-chain-file
+
+# nodeos general config
+p2p-server-address = 0.0.0.0:9876
+p2p-listen-endpoint = 0.0.0.0:9876
+p2p-max-nodes-per-host = 1
+max-clients = 250
+connection-cleanup-period = 30
+sync-fetch-span = 100
+txn-reference-block-lag = 0
+allowed-connection = any
+agent-name = bensigcoolconfig
+
+###### additional plugins
+plugin = eosio::chain_api_plugin
+plugin = eosio::history_plugin
+
+###### p2p peer address
+p2p-peer-address=testnet2.telos.eosusa.news:59877
+p2p-peer-address=node1.testnet2.telosglobal.io:9876
+p2p-peer-address=node2.testnet2.telosglobal.io:9876
+p2p-peer-address=basho.eos.barcelona:9899
+p2p-peer-address=sslapi.teloscentral.com:9875
+p2p-peer-address=145.239.133.188:5566
+p2p-peer-address=testnet.telos.eclipse24.io:6789
+p2p-peer-address=testnet2.telos.eosdetroit.io:1337
+p2p-peer-address=basho-p2p.telosuk.io:19876
+p2p-peer-address=telos-testnet.atticlab.net:7876
+p2p-peer-address=testnet.eossweden.eu:8022
+p2p-peer-address=testnet.telos.cryptosuvi.io:2223
+p2p-peer-address=nickfury.tlos.goodblock.io:9876
+p2p-peer-address=telosapi.eosmetal.io:59877
+p2p-peer-address=207.148.6.75:9877
+p2p-peer-address=p2p.testnet.telosgermany.io
+p2p-peer-address=176.9.86.214:9877
+p2p-peer-address=telos-testnet-b.eosphere.io:9876
+p2p-peer-address=testnet.telos.africa:9875
+p2p-peer-address=p2p.testnet.telosgreen.com:9876
+p2p-peer-address=testnet2p2p.telosarabia.net:9876
+p2p-peer-address=peer.tlostest.alohaeos.com:9876
+p2p-peer-address=157.230.29.117:9876
+```
+
+## Frequently Asked Questions (FAQs)
+#### Q. How does a Validator create a new account on Telos Blockchain?
+#### A. There are 2 ways to create an account on Telos Blockchain:
+a. [Using Card payment](https://telos-account-creator.com/)
+b. [Create for FREE](https://telosuk.io/how-to-create-a-free-telos-account/)
+
+#### Q. What is the difference between Telos Mainnet and Testnet?
+#### A. The differences are as follows:
+a. The mainnet of a blockchain launches when the protocol is fully developed and is the network where the project's functionalities, such as transactions with the native tokens, are carried out. Here is where transactions are being broadcasted, verified, and recorded on a distributed ledger technology. Whereas the testnet is a safe, separate network where developers carry out tests in the code without risking the main blockchain. The Telos Testnets are a sandbox for testing newly implemented features, finding bugs within the network and developing DApps.
+a. Testnet is for testing code updates, other functionalities, bug identification, new projects and program development, among many other uses.
+b. People associate a testnet with the initial developing of a blockchain where all the codes run, and we test everything before the final deployment of the protocol to the mainnet.
+c. the Telos testnets have one prominent advantage over the other testnets: it is a duplicate of the mainnet so it includes all its smart contracts and functionalities in the testnets. Because of this, developers and BPs obtain complete, accurate results when they run their tests, while reducing the work they have to do before running them.
+e. Testnet is designed to be as close to the code/features of the Telos Mainnet, with exception to any new innovations being tested in preparation for deployment on Mainnet.
+
+#### Q. When a new upgrade or anything different will be tested before launch, what test strategies the Telos Validators follow?
+#### A. Telos Validators follow a 4-tier test strategy, as it allows “to properly test/vet things at each respective level, and as it progresses through the tiers, additional testing/testers stress-test the system until its final deployment to the Telos Mainnet.” The stages are:
+* <u>Internal Dev Testing</u>: closed-loop testing of all code changes before presenting to any public tier.
+* <u>Stagenet Testing</u>: initial selected access, testing ran dedicated nodes.
+* <u>Testnet Testing</u>: this is where most public testing of features will occur before completing deployment to Mainnet. Code changes/activation at this level require 15/21 approval of the Testnet BPs.
+* <u>Mainnet Deployment</u>: once all testing has been completed, a deployment date agreed upon, a 15/21 BP approval is needed to activate all code changes/features on the Mainnet.
